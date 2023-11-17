@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plataforma Creativa</title>
+    <style>
+        body {     
+            font-family: 'Courier New', monospace;
+            margin: 0;
+            padding: 0;
+            color: #fff;
+        }
+
+        header {
+            background-color: rgba(30, 30, 30, 0.3);
+            padding: 300px;
+            text-align: center;
+        }
+
+        h1 { 
+            padding: 10px;/* Modifica el valor del segundo número según tus necesidades */
+            font-size: 60px;
+            font-family: 'Cabin', monospace;
+            position: relative;
+            display: inline; /* Cambiado de inline-block a inline */
+
+            
+        }
+
+        h1 span {
+            display: inline-block;
+            transition: transform 0.8s ease-out;
+        }
+
+        h1:hover span {
+            transform: translate(
+            random(-10, 10)px,
+            random(-10, 10)px);
+        }
+           
+       
+
+        nav {
+            background-color: #222;
+            padding: 10px;
+            text-align: center;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            padding: 10px;
+            margin: 0 10px;
+        }
+
+        section {
+            padding: 60px; /* Ajusta el espacio alrededor de la sección de proyectos */
+            text-align: center;
+            margin-top: 300px; /* Ajusta el margen superior de la sección de proyectos */
+        }
+
+        .column-container {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+        }
+
+        .column {
+            flex: 0 0 25%; /* Reduce el tamaño de las imágenes en la sección de proyectos */
+            margin: 20px;
+        }
+
+        .column img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 10px;
+            filter: brightness(50%);
+            filter: grayscale(100%);
+            transition: filter 0.5s ease;
+            /* Otros estilos de las imágenes... */
+        }
+
+        .column:hover img {
+            filter: grayscale(0%);
+        }
+
+        .column p {
+            display: none;
+            font-size: 16px;
+            color: #fff;
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 5px;
+            border-radius: 5px;
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .column:hover p {
+            display: block;
+        }
+
+        .sketch-container {
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .sketch {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .reveal-text {
+            font-family: 'Courier New', monospace;
+            background-color: rgba(255, 255, 255, 0);
+            padding: 60px;
+            margin-top: 20px;
+            border-radius: 60px;
+            max-width: 80%;
+            margin-left: auto;
+            margin-right: auto;
+            font-size: 28px;
+            white-space: nowrap;
+            overflow: hidden;
+            border-right: 2px solid #000;
+            animation: typing 8s steps(30, end) paused;
+            position: relative;
+        }
+
+        .close-button {
+            position: absolute;
+            top: 60px;
+            right: 60px;
+            cursor: pointer;
+            color: #fff;
+            font-size: 50px;
+        }
+
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+
+        footer {
+            background-color: #111;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(14, 14, 14, 0.953);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 999;
+        }
+
+        .overlay-text {
+            color: #fcfcfc;
+            font-size: 24px;
+            text-align: center;
+            max-width: 80%;
+            position: relative;
+        }
+
+        .close-button-overlay {
+            position: absolute;
+            top: 70px;
+            right: 60px;
+            cursor: pointer;
+            color: #fff;
+            font-size: 50px;
+        }
+
+        .particle-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }   
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>
+            <span>P l a t a f o r m a</span>
+            <span>C r e a t i v a</span>
+        </h1>
+    </header>
+
+    <nav>
+        <a href="#" onclick="scrollToTopAndClose()">Inicio</a>
+        <a href="#" id="aboutLink">Sobre mí</a>
+        <a href="https://wiki.ead.pucv.cl/Sarai_Far%C3%ADas_Pincheira" target="_blank">Otros</a>
+    </nav>
+
+    <div class="reveal-text" id="revealText">
+        <p>¡Bienvenido a mi plataforma de contenido creativo!</p>
+        <p>Este espacio es mi lienzo digital, donde comparto mi</p>
+        <p>viaje creativo, proyectos destacados y contenido</p>
+        <p>relacionado al diseño.</p>
+        <p>Te Invito a explorar este fascinante mundo visual.</p>
+        <p>Encontrar inspiración y explorar la magia del diseño.</p>
+           
+    </div>
+
+    <section>
+        <h2>Proyectos</h2>
+        <div class="slider-container">
+        <div class="column-container">
+            <div class="column">
+                <a href="https://saraifp.github.io/ie2023/" target="_blank">
+                    <img src="E1.png" alt="Descripción de la imagen 1">
+                    <p>Encargo 1</p>
+                </a>
+            </div>
+            <div class="column">
+                <a href="https://editor.p5js.org/SaraiFp/sketches/LeTZUAL8N" target="_blank">
+                    <img src="E2.png" alt="Descripción de la imagen 2">
+                    <p>Encargo 2</p>
+                </a>
+            </div>
+            <div class="column">
+                <a href="https://saraifp.github.io/ie23-03/" target="_blank">
+                    <img src="E3.png" alt="Descripción de la imagen 3">
+                    <p>Encargo 3</p>
+                </a>
+            </div>
+            <div class="column">
+                <a href="https://editor.p5js.org/SaraiFp/sketches/BtxNEmqJq" target="_blank">
+                    <img src="E4.png" alt="Descripción de la imagen 3">
+                    <p>Encargo 4</p>
+                </a>
+            </div>
+            <div class="column">
+                <a href="https://editor.p5js.org/SaraiFp/sketches/FCTUwHXmQ" target="_blank">
+                    <img src="E5.png" alt="Descripción de la imagen 3">
+                    <p>Encargo 5</p>
+                </a>
+            </div>
+            <div class="column">
+                <a href="https://editor.p5js.org/SaraiFp/sketches/nsZTpcPBz" target="_blank">
+                    <img src="E6.png" alt="Descripción de la imagen 3">
+                    <p>Encargo 6</p>
+                </a>
+            </div>
+            <!-- Contenedor de partículas -->
+            <div id="particle-container" class="particle-container">
+        </div>
+    </section>
+    <div id="particle-container" class="particle-container"></div>
+    <footer>
+        <p>Derechos de autor © 2023 Mi Página</p>
+    </footer>
+
+    <div class="overlay" id="aboutOverlay">
+        <span class="close-button-overlay" onclick="closeOverlay()">x</span>
+        <div class="overlay-text">
+            <p>Hola!  Mi nombre es Sarai Farías Pincheira , una apasionada  estudiante de diseño.</p>
+            <p>Mi viaje en el mundo del diseño es una exploración constante de la creatividad,</p>
+            <p>la innovación y la expresión visual. Mis experiencias académicas han ampliado mi </p>
+            <p>perspectiva y me han permitido participar en proyectos diversos, 
+            <p>desde la conceptualización hasta la implementación.</p>
+            <p></p>
+            <p>La diversidad de proyectos en los que he trabajado</p> 
+            <p><b>incluye diseño gráfico, diseño industrial y diseño de interacción. </b></p>
+            <p>Cada proyecto se convierte en una oportunidad única para aprender, </p>
+            <p>crecer y aplicar mi visión única a través del arte y la funcionalidad. </p>
+            
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('scroll', function () {
+            const revealText = document.getElementById('revealText');
+            const revealTextPosition = revealText.getBoundingClientRect().top;
+            const windowHeight = window.innerHeight;
+
+            if (revealTextPosition < windowHeight) {
+                revealText.style.animationPlayState = 'running';
+            }
+        });
+
+        document.getElementById('aboutLink').addEventListener('click', function () {
+            document.getElementById('aboutOverlay').style.display = 'flex';
+        });
+
+        function closeOverlay() {
+            document.getElementById('aboutOverlay').style.display = 'none';
+        }
+
+        // Función para volver al principio y cerrar la sobreposición
+        function scrollToTopAndClose() {
+            document.documentElement.scrollTop = 0;
+            closeOverlay();
+        }
+
+        // Función para abrir la imagen en una nueva pestaña
+        function openImage(imageUrl) {
+            window.open(imageUrl, '_blank');
+        }
+    </script>
+<script>
+    let particles = [];
+
+    function setup() {
+        // Crear el canvas de partículas
+        createCanvas(windowWidth, windowHeight).parent('particle-container');
+
+        // Crear partículas
+        for (let i = 0; i < 100; i++) {
+            particles.push(new Particle());
+        }
+    }
+
+    function draw() {
+        // Dibujar el fondo
+        background(0);
+
+        // Mover y mostrar las partículas
+        for (let i = 0; i < particles.length; i++) {
+            particles[i].update();
+            particles[i].show();
+        }
+    }
+
+    // Definir la clase Particle
+    class Particle {
+        constructor() {
+            this.x = random(width);
+            this.y = random(height);
+            this.diameter = random(5, 10);
+            this.xSpeed = random(-2, 2);
+            this.ySpeed = random(-2, 2);
+        }
+
+        update() {
+            this.x += this.xSpeed;
+            this.y += this.ySpeed;
+
+            if (this.x > width || this.x < 0) {
+                this.xSpeed *= -1;
+            }
+
+            if (this.y > height || this.y < 0) {
+                this.ySpeed *= -1;
+            }
+        }
+
+        show() {
+            fill(255);
+            noStroke();
+            ellipse(this.x, this.y, this.diameter, this.diameter);
+        }
+    }
+    </script>
+<script>
+    document.addEventListener('mousemove', function (e) {
+        const title = document.querySelector('h1');
+        const mouseX = e.clientX;
+        const mouseY = e.clientY;
+
+        // Calcula la distancia entre el mouse y el centro del título
+        const deltaX = mouseX - (title.offsetLeft + title.offsetWidth / 2);
+        const deltaY = mouseY - (title.offsetTop + title.offsetHeight / 2);
+
+        // Calcula la distancia total desde el centro del título
+        const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+
+        // Mueve las letras si el mouse está sobre el título
+        if (distance < title.offsetWidth / 2) {
+            const letters = title.innerText.split('');
+            const numLetters = letters.length;
+
+            letters.forEach((letter, index) => {
+                // Calcula el ángulo para distribuir las letras alrededor del centro
+                const angle = (index / numLetters) * Math.PI * 2;
+
+                // Calcula las nuevas posiciones de las letras
+                const newLeft = mouseX - title.offsetWidth / 2 + (title.offsetWidth / 2) * Math.cos(angle);
+                const newTop = mouseY - title.offsetHeight / 2 + (title.offsetHeight / 2) * Math.sin(angle);
+
+                // Aplica las nuevas posiciones a las letras
+                title.children[index].style.left = newLeft + 'px';
+                title.children[index].style.top = newTop + 'px';
+            });
+        } else {
+            // Restaura la posición original de las letras si el mouse no está sobre el título
+            title.children.forEach(letter => {
+                letter.style.left = '0';
+                letter.style.top = '0';
+            });
+        }
+    });
+</script>
+</body>
+</html>
